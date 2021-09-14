@@ -99,12 +99,12 @@ install -v -c -m 0644 containerd.service /lib/systemd/system/
 install -v -c -m 0644 docker.service /lib/systemd/system/
 install -v -c -m 0644 docker.socket /lib/systemd/system/
 sleep 1
-/bin/systemctl daemon-reload
+/bin/systemctl daemon-reload > /dev/null 2>&1 || :
 getent group docker >/dev/null 2>&1 || groupadd -r docker
 ' > etc/docker/.install.txt
 
 echo '
-/bin/systemctl daemon-reload
+/bin/systemctl daemon-reload > /dev/null 2>&1 || :
 sleep 1
 systemctl stop docker.socket > /dev/null 2>&1 || :
 systemctl stop docker.service > /dev/null 2>&1 || :
@@ -112,6 +112,7 @@ systemctl stop containerd.service > /dev/null 2>&1 || :
 systemctl disable docker.socket > /dev/null 2>&1 || :
 systemctl disable docker.service > /dev/null 2>&1 || :
 systemctl disable containerd.service > /dev/null 2>&1 || :
+ip link set docker0 down > /dev/null 2>&1 || :
 ' > etc/docker/.stop-disable.txt
 
 chmod 0644 etc/docker/.install.txt
