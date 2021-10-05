@@ -48,6 +48,8 @@ rm -fr /etc/docker
 
 rm -fr /etc/systemd/system/docker.service.d
 
+rm -fr /usr/libexec/docker
+
 userdel -f -r docker 2>/dev/null || :
 groupdel -f docker 2>/dev/null || :
 

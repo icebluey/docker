@@ -28,19 +28,20 @@ rm -f "docker-rootless-extras-${_version}.tgz"
 
 cd ../compose
 _compose_version="$(wget -qO- 'https://github.com/docker/compose/releases/' | grep -i 'Latest release' -A 10 | grep -i '<a href="/docker/compose/tree/' | sed 's/ /\n/g' | grep -i '^href="/docker/compose/tree/' | sed 's@href="/docker/compose/tree/@@g' | sed 's/"//g' | sort -V | uniq | tail -1)"
-wget -c -t 0 -T 9 "https://github.com/docker/compose/releases/download/${_compose_version}/docker-compose-Linux-x86_64.sha256"
-wget -c -t 0 -T 9 "https://github.com/docker/compose/releases/download/${_compose_version}/docker-compose-Linux-x86_64"
+_compose_file="$(wget -qO- 'https://github.com/docker/compose/releases/' | grep -i 'docker-compose-linux-x86_64' | grep -i "${_compose_version}" | grep -iv '\.sha' | sed 's|"|\n|g' | grep -i '^/docker/compose/releases/download/' | awk -F/ '{print $NF}' | tail -n 1)"
+wget -c -t 0 -T 9 "https://github.com/docker/compose/releases/download/${_compose_version}/${_compose_file}.sha256"
+wget -c -t 0 -T 9 "https://github.com/docker/compose/releases/download/${_compose_version}/${_compose_file}"
 echo
 sleep 2
-sha256sum -c docker-compose-Linux-x86_64.sha256
+sha256sum -c "${_compose_file}.sha256"
 rc=$?
 if [[ $rc != 0 ]]; then
     exit 1
 fi
 sleep 2
-rm -f docker-compose-Linux-x86_64.sha256
+rm -f *.sha*
 echo
-mv -f docker-compose-Linux-x86_64 docker-compose
+mv -f "${_compose_file}" docker-compose
 echo
 
 cd ../buildx
@@ -65,8 +66,9 @@ install -m 0755 -d var/lib/containerd
 install -m 0755 -d etc/systemd/system/docker.service.d
 
 install -v -c -m 0755 ../static/docker/* usr/bin/
-install -v -c -m 0755 ../compose/docker-compose usr/bin/
 install -v -c -m 0755 ../rootless-extras/docker-rootless-extras/* usr/bin/
+#install -v -c -m 0755 ../compose/docker-compose usr/bin/
+install -v -c -m 0755 ../compose/docker-compose usr/libexec/docker/cli-plugins/
 install -v -c -m 0755 ../buildx/docker-buildx usr/libexec/docker/cli-plugins/
 
 ###############################################################################
