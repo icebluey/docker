@@ -39,10 +39,15 @@ rm -fr /lib/systemd/system/docker.socket
 
 rm -fr /var/lib/docker-engine
 rm -fr /var/lib/docker
-rm -fr /var/run/containerd
-rm -fr /var/run/docker
+
+rm -fr /opt/containerd
 rm -fr /run/containerd
+rm -fr /run/docker.sock
 rm -fr /run/docker
+rm -fr /var/run/containerd
+rm -fr /var/run/docker.sock
+rm -fr /var/run/docker
+
 rm -fr /etc/containerd
 rm -fr /etc/docker
 
@@ -58,3 +63,4 @@ ip link set docker0 down 2>/dev/null
 /bin/systemctl daemon-reload
 
 exit
+
