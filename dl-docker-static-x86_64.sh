@@ -221,7 +221,6 @@ rm -fr /run/docker
 rm -fr /var/run/containerd
 rm -fr /var/run/docker.sock
 rm -fr /var/run/docker
-
 ' > etc/docker/.stop-disable.txt
 
 chmod 0644 etc/docker/.install.txt
