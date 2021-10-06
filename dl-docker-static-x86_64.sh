@@ -214,6 +214,14 @@ systemctl disable docker.socket > /dev/null 2>&1 || :
 systemctl disable docker.service > /dev/null 2>&1 || :
 systemctl disable containerd.service > /dev/null 2>&1 || :
 ip link set docker0 down > /dev/null 2>&1 || :
+
+rm -fr /run/containerd
+rm -fr /run/docker.sock
+rm -fr /run/docker
+rm -fr /var/run/containerd
+rm -fr /var/run/docker.sock
+rm -fr /var/run/docker
+
 ' > etc/docker/.stop-disable.txt
 
 chmod 0644 etc/docker/.install.txt
