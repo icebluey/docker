@@ -27,7 +27,7 @@ sleep 2
 rm -f "docker-rootless-extras-${_version}.tgz"
 
 cd ../compose
-_compose_version="$(wget -qO- 'https://github.com/docker/compose/releases/' | grep -i 'Latest release' -A 10 | grep -i '<a href="/docker/compose/tree/' | sed 's/ /\n/g' | grep -i '^href="/docker/compose/tree/' | sed 's@href="/docker/compose/tree/@@g' | sed 's/"//g' | sort -V | uniq | tail -1)"
+_compose_version="$(wget -qO- 'https://github.com/docker/compose/releases/' | grep -i '<a href="/docker/compose/tree/' | sed 's/ /\n/g' | grep -i '^href="/docker/compose/tree/' | sed 's@href="/docker/compose/tree/@@g' | sed 's/"//g' | grep -ivE 'alpha|beta|rc' | sort -V | uniq | tail -1)"
 _compose_file="$(wget -qO- 'https://github.com/docker/compose/releases/' | grep -i 'docker-compose-linux-x86_64' | grep -i "${_compose_version}" | grep -iv '\.sha' | sed 's|"|\n|g' | grep -i '^/docker/compose/releases/download/' | awk -F/ '{print $NF}' | tail -n 1)"
 wget -c -t 0 -T 9 "https://github.com/docker/compose/releases/download/${_compose_version}/${_compose_file}.sha256"
 wget -c -t 0 -T 9 "https://github.com/docker/compose/releases/download/${_compose_version}/${_compose_file}"
