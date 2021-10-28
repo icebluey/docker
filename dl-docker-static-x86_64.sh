@@ -56,18 +56,15 @@ cd ../re-pack
 
 install -m 0755 -d usr/bin
 install -m 0755 -d usr/libexec/docker/cli-plugins
-#install -m 0755 -d usr/lib/systemd/system
 install -m 0755 -d etc/containerd
 install -m 0755 -d etc/docker
 install -m 0755 -d var/lib/docker
 install -m 0755 -d var/lib/docker-engine
 install -m 0755 -d var/lib/containerd
-
 install -m 0755 -d etc/systemd/system/docker.service.d
-
+sleep 1
 install -v -c -m 0755 ../static/docker/* usr/bin/
 install -v -c -m 0755 ../rootless-extras/docker-rootless-extras/* usr/bin/
-#install -v -c -m 0755 ../compose/docker-compose usr/bin/
 install -v -c -m 0755 ../compose/docker-compose usr/libexec/docker/cli-plugins/
 install -v -c -m 0755 ../buildx/docker-buildx usr/libexec/docker/cli-plugins/
 
@@ -94,7 +91,7 @@ Type=notify
 # the default is not to use systemd for cgroups because the delegate issues still
 # exists and systemd currently does not support the cgroup feature set required
 # for containers run by docker
-ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock $DOCKER_NETWORK_OPTIONS
 ExecReload=/bin/kill -s HUP $MAINPID
 TimeoutSec=0
 RestartSec=2
