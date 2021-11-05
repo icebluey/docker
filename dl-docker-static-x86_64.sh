@@ -182,6 +182,9 @@ chmod 0644 etc/docker/containerd.service
 echo '{
   "dns": [
     "8.8.8.8"
+  ],
+  "exec-opts": [
+    "native.cgroupdriver=systemd"
   ]
 }' > etc/docker/daemon.json
 sleep 1
