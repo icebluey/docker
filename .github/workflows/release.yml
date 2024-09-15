@@ -19,6 +19,7 @@ jobs:
       - name: Package Docker and Containerd
         run: |
           sudo apt update -y -qqq
+          sudo apt autoremove --purge needrestart
           sudo apt install -y -qqq bash wget ca-certificates curl git xz-utils tar gzip bzip2 openssl
           sudo ln -svf bash /bin/sh
           sudo bash scripts/.clean-os.sh
