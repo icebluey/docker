@@ -23,7 +23,7 @@ systemctl disable mysqld.service
 systemctl stop postgresql.service
 systemctl stop mysql.service
 systemctl stop mysqld.service
-apt autoremove --purge -y $(dpkg -l | awk '$2 ~ /mysql|postgresql|google-cloud|^php[1-9]/ {print $2}' |  grep -iv libmysqlclient | sort -V | uniq | paste -sd" ")
+apt autoremove --purge -y $(dpkg -l | awk '$2 ~ /mysql|postgresql|google-cloud|mssql|msbuild|msodbcsql|^php[1-9]/ {print $2}' |  grep -iv libmysqlclient | sort -V | uniq | paste -sd" ")
 /bin/rm -fr /var/lib/postgresql /var/lib/mysql
 
 # delete snap
@@ -65,6 +65,33 @@ apt autoremove --purge lxd-agent-loader snapd
 /bin/rm -rf /var/cache/snapd
 /bin/rm -fr /tmp/snap.lxd
 /bin/rm -fr /tmp/snap-private-tmp
+
+
+/bin/rm -fr /usr/share/sbt
+/bin/rm -fr /usr/share/gradle*
+/bin/rm -fr /usr/share/miniconda*
+/bin/rm -fr /usr/share/az_*
+/bin/rm -fr /usr/share/swift*
+/bin/rm -fr /usr/share/dotnet*
+/bin/rm -fr /usr/lib/snapd
+/bin/rm -fr /usr/lib/firefox
+/bin/rm -fr /usr/lib/llvm*
+/bin/rm -fr /usr/lib/mono
+/bin/rm -fr /usr/lib/jvm
+/bin/rm -fr /usr/lib/google-cloud-sdk*
+/bin/rm -fr /opt/containerd
+/bin/rm -fr /opt/mssql-tools
+/bin/rm -fr /opt/google
+/bin/rm -fr /opt/pipx
+/bin/rm -fr /opt/az
+/bin/rm -fr /opt/microsoft
+/bin/rm -fr /usr/local/sqlpackage
+/bin/rm -fr /usr/local/n
+/bin/rm -fr /usr/local/aws*
+/bin/rm -fr /usr/local/julia*
+/bin/rm -fr /usr/local/share
+/bin/rm -fr /usr/local/.ghcup
+/bin/rm -fr /opt/hostedtoolcache
 
 df -Th
 exit
