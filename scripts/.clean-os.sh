@@ -10,7 +10,7 @@ df -Th
 apt autoremove --purge -y $(dpkg -l | grep -i -E 'firefox|firebird|google-chrome-stable' | awk '{print $2}' | sort -V | uniq | paste -sd" ")
 
 # delete microsoft
-apt autoremove --purge -y $(dpkg -l | grep -i -E 'microsoft|libmono|mono-|monodoc|powershell' | awk '{print $2}' | sort -V | uniq | paste -sd" ")
+apt autoremove --purge -y $(dpkg -l | grep -i -E 'dotnet|microsoft|libmono|mono-|monodoc|powershell' | awk '{print $2}' | sort -V | uniq | paste -sd" ")
 
 # delete docker
 apt autoremove --purge -y crun
