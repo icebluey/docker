@@ -121,6 +121,5 @@ apt install -y libseccomp-dev libseccomp2
 apt install -y make gcc g++ perl libperl-dev groff-base dpkg-dev cmake m4
 apt install -y autoconf autoconf-archive autogen automake autopoint autotools-dev libtool m4 bison flex
 
-apt upgrade -fy -qqq
 df -Th
 exit
