@@ -67,7 +67,7 @@ apt autoremove --purge lxd-agent-loader snapd
 /bin/rm -rf /var/cache/snapd
 /bin/rm -fr /tmp/snap.lxd
 /bin/rm -fr /tmp/snap-private-tmp
-
+/bin/rm -fr /usr/lib/snapd
 
 /bin/rm -fr /usr/share/sbt
 /bin/rm -fr /usr/share/gradle*
