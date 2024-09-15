@@ -13,7 +13,7 @@ apt autoremove --purge -y $(dpkg -l | grep -i -E 'firefox|firebird|google-chrome
 apt autoremove --purge -y $(dpkg -l | grep -i -E 'microsoft|libmono|mono-|monodoc|powershell' | awk '{print $2}' | sort -V | uniq | paste -sd" ")
 
 # delete docker
-apt autoremove --purge -y $(dpkg -l | grep -i -E 'docker|container' | awk '{print $2}' | sort -V | uniq | paste -sd" ")
+apt autoremove --purge -y $(dpkg -l | grep -i -E 'docker|container|moby' | awk '{print $2}' | sort -V | uniq | paste -sd" ")
 /bin/rm -fr /etc/docker /usr/libexec/docker /etc/containerd /var/lib/containerd /var/lib/docker*
 
 # delete mysql postgresql php google-cloud
