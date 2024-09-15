@@ -46,7 +46,80 @@ _install_go() {
     go version
     echo
 }
-_install_go
+
+_install_libseccomp() {
+    set -e
+    _tmp_dir="$(mktemp -d)"
+    cd "${_tmp_dir}"
+    wget -c -t 9 -T 9 "https://github.com/seccomp/libseccomp/releases/download/v2.5.5/libseccomp-2.5.5.tar.gz"
+    tar -xof libseccomp-*.tar*
+    sleep 1
+    rm -f libseccomp-*.tar*
+    cd libseccomp-*
+    ./configure \
+    --build=x86_64-linux-gnu \
+    --host=x86_64-linux-gnu \
+    --prefix=/usr --exec-prefix=/usr --bindir=/usr/bin --sbindir=/usr/sbin \
+    --sysconfdir=/etc --datadir=/usr/share --includedir=/usr/include \
+    --libdir=/usr/lib/x86_64-linux-gnu --libexecdir=/usr/libexec --localstatedir=/var \
+    --sharedstatedir=/var/lib --mandir=/usr/share/man --infodir=/usr/share/info \
+    --enable-shared --enable-static
+    make all
+    rm -fr /tmp/libseccomp
+    make DESTDIR=/tmp/libseccomp install
+    cd /tmp/libseccomp
+    if [[ "$(pwd)" = '/' ]]; then
+        echo
+        printf '\e[01;31m%s\e[m\n' "Current dir is '/'"
+        printf '\e[01;31m%s\e[m\n' "quit"
+        echo
+        exit 1
+    else
+        rm -fr lib64
+        rm -fr lib
+        chown -R root:root ./
+    fi
+    find usr/ -type f -iname '*.la' -delete
+    if [[ -d usr/share/man ]]; then
+        find -L usr/share/man/ -type l -exec rm -f '{}' \;
+        sleep 2
+        find usr/share/man/ -type f -iname '*.[1-9]' -exec gzip -f -9 '{}' \;
+        sleep 2
+        find -L usr/share/man/ -type l | while read file; do ln -svf "$(readlink -s "${file}").gz" "${file}.gz" ; done
+        sleep 2
+        find -L usr/share/man/ -type l -exec rm -f '{}' \;
+    fi
+    if [[ -d usr/lib/x86_64-linux-gnu ]]; then
+        find usr/lib/x86_64-linux-gnu/ -type f \( -iname '*.so' -or -iname '*.so.*' \) | xargs --no-run-if-empty -I '{}' chmod 0755 '{}'
+        find usr/lib/x86_64-linux-gnu/ -iname 'lib*.so*' -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs --no-run-if-empty -I '{}' /usr/bin/strip '{}'
+        find usr/lib/x86_64-linux-gnu/ -iname '*.so' -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs --no-run-if-empty -I '{}' /usr/bin/strip '{}'
+    fi
+    if [[ -d usr/lib64 ]]; then
+        find usr/lib64/ -type f \( -iname '*.so' -or -iname '*.so.*' \) | xargs --no-run-if-empty -I '{}' chmod 0755 '{}'
+        find usr/lib64/ -iname 'lib*.so*' -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs --no-run-if-empty -I '{}' /usr/bin/strip '{}'
+        find usr/lib64/ -iname '*.so' -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs --no-run-if-empty -I '{}' /usr/bin/strip '{}'
+    fi
+    if [[ -d usr/sbin ]]; then
+        find usr/sbin/ -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs --no-run-if-empty -I '{}' /usr/bin/strip '{}'
+    fi
+    if [[ -d usr/bin ]]; then
+        find usr/bin/ -type f -exec file '{}' \; | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs --no-run-if-empty -I '{}' /usr/bin/strip '{}'
+    fi
+    echo
+    rm -vf /usr/lib/x86_64-linux-gnu/libseccomp.a
+    rm -vf /usr/lib/x86_64-linux-gnu/libseccomp.so.2.5.[1234]
+    sleep 2
+    /bin/cp -afr * /
+    sleep 2
+    cd /tmp
+    rm -fr "${_tmp_dir}"
+    rm -fr /tmp/libseccomp
+    /sbin/ldconfig
+}
+
+set -e
+
+_install_libseccomp
 
 # Go programming language
 export GOROOT='/usr/local/go'
@@ -57,8 +130,7 @@ export PATH="$GOROOT/bin:$PATH"
 alias go="$GOROOT/bin/go"
 alias gofmt="$GOROOT/bin/gofmt"
 rm -fr ~/.cache/go-build
-
-set -e
+_install_go
 
 _tmp_dir="$(mktemp -d)"
 cd "${_tmp_dir}"
