@@ -188,7 +188,7 @@ tar --format=gnu -cf - * | xz --threads=2 -v -f -z -9 > /tmp/"containerd-${_cont
 echo
 sleep 2
 cd /tmp
-openssl dgst -r -sha256 "containerd-${_containerd_ver}-1_amd64.tar.xz" > "containerd-${_containerd_ver}-1_amd64.tar.xz".sha256
+sha256sum "containerd-${_containerd_ver}-1_amd64.tar.xz" > "containerd-${_containerd_ver}-1_amd64.tar.xz".sha256
 sleep 2
 
 cd /tmp
