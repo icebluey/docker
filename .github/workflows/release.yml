@@ -46,9 +46,9 @@ jobs:
         run: |
           _dateutc=$(date -u +%Y-%m-%d)
           _repo="$(echo ${{ github.repository }} | awk -F '/' '{print $2}')"
-          ls -lah /tmp/.artifacts/
-          ls -1 /tmp/.artifacts/*.tar.xz 2>/dev/null | xargs -I "{}" sudo bash scripts/.upload_file_to_github-release.sh --token ${{ secrets.GITHUB_TOKEN }} --user "${{ github.repository_owner }}" --repo "${_repo}" --file "{}" --tag "v${_dateutc}"
-          ls -1 /tmp/.artifacts/*.tar.xz.sha256 2>/dev/null | xargs -I "{}" sudo bash scripts/.upload_file_to_github-release.sh --token ${{ secrets.GITHUB_TOKEN }} --user "${{ github.repository_owner }}" --repo "${_repo}" --file "{}" --tag "v${_dateutc}"
+          /bin/ls -lah /tmp/.artifacts/
+          /bin/ls -1 /tmp/.artifacts/*.tar.xz 2>/dev/null | xargs -I "{}" sudo bash scripts/.upload_file_to_github-release.sh --token ${{ secrets.GITHUB_TOKEN }} --user "${{ github.repository_owner }}" --repo "${_repo}" --file "{}" --tag "v${_dateutc}"
+          /bin/ls -1 /tmp/.artifacts/*.tar.xz.sha256 2>/dev/null | xargs -I "{}" sudo bash scripts/.upload_file_to_github-release.sh --token ${{ secrets.GITHUB_TOKEN }} --user "${{ github.repository_owner }}" --repo "${_repo}" --file "{}" --tag "v${_dateutc}"
           sudo sleep 2
           cd /tmp
           sudo rm -fr /tmp/.artifacts
