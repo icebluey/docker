@@ -23,7 +23,7 @@ systemctl disable mysqld.service
 systemctl stop postgresql.service
 systemctl stop mysql.service
 systemctl stop mysqld.service
-apt autoremove --purge -y $(dpkg -l | awk '$2 ~ /mysql|postgresql|google-cloud|mssql|msbuild|msodbcsql|^php[1-9]/ {print $2}' |  grep -iv libmysqlclient | sort -V | uniq | paste -sd" ")
+apt autoremove --purge -y $(dpkg -l | awk '$2 ~ /mysql|postgresql|google-cloud|mssql|msbuild|msodbcsql|^llvm-|^php[1-9]/ {print $2}' |  grep -iv libmysqlclient | sort -V | uniq | paste -sd" ")
 /bin/rm -fr /var/lib/postgresql /var/lib/mysql
 
 # delete snap
