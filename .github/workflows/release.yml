@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Package Docker and Containerd
+      - name: Package docker and containerd
         run: |
           sudo apt update -y -qqq
           sudo apt autoremove --purge needrestart
