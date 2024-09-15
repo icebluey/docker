@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Package Docker and K8s
+      - name: Package Docker and Containerd
         run: |
           sudo apt update -y -qqq
           sudo apt install -y -qqq bash wget ca-certificates curl git
