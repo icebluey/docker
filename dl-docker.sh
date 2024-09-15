@@ -314,7 +314,7 @@ tar --format=gnu -cf - * | xz --threads=2 -v -f -z -9 > /tmp/"docker-${_version}
 echo
 sleep 2
 cd /tmp
-openssl dgst -r -sha256 "docker-${_version}-1_amd64.tar.xz" > "docker-${_version}-1_amd64.tar.xz".sha256
+sha256sum "docker-${_version}-1_amd64.tar.xz" > "docker-${_version}-1_amd64.tar.xz".sha256
 sleep 2
 
 cd /tmp
