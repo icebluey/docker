@@ -185,7 +185,7 @@ sleep 2
 install -m 0755 -d /tmp/containerd/usr/bin
 install -m 0755 -d /tmp/containerd/etc/containerd/certs.d
 install -m 0755 -d /tmp/containerd/etc/containerd/ocicrypt/keys
-install -m 0755 -d /tmp/containerd/var/lib/containerd
+#install -m 0755 -d /tmp/containerd/var/lib/containerd
 
 install -v -c -m 0755 bin/* /tmp/containerd/usr/bin/
 rm -f /tmp/containerd/usr/bin/runc
@@ -247,9 +247,9 @@ chmod 0644 etc/containerd/containerd.service
 
 echo '
 cd "$(dirname "$0")"
-[ -f /etc/containerd/config.toml ] || cp -f /etc/containerd/config.toml.example /etc/containerd/config.toml
 rm -f /lib/systemd/system/containerd.service
-sleep 1
+[[ -d /var/lib/containerd ]] || install -v -m 0755 -d /var/lib/containerd && chown root:root /var/lib/containerd
+[[ -f /etc/containerd/config.toml ]] || cp -v /etc/containerd/config.toml.example /etc/containerd/config.toml
 /bin/systemctl daemon-reload
 install -v -c -m 0644 containerd.service /lib/systemd/system/
 sleep 1
