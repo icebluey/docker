@@ -78,12 +78,12 @@ cd ../re-pack
 
 install -m 0755 -d usr/bin
 install -m 0755 -d usr/libexec/docker/cli-plugins
-install -m 0755 -d etc/containerd
 install -m 0755 -d etc/docker
-install -m 0755 -d var/lib/docker
-install -m 0755 -d var/lib/docker-engine
-install -m 0755 -d var/lib/containerd
-install -m 0755 -d etc/systemd/system/docker.service.d
+#install -m 0755 -d etc/containerd
+#install -m 0755 -d var/lib/docker
+#install -m 0755 -d var/lib/docker-engine
+#install -m 0755 -d var/lib/containerd
+#install -m 0755 -d etc/systemd/system/docker.service.d
 sleep 1
 install -v -c -m 0755 ../static/docker/* usr/bin/
 install -v -c -m 0755 ../rootless-extras/docker-rootless-extras/* usr/bin/
@@ -92,9 +92,9 @@ install -v -c -m 0755 ../buildx/docker-buildx usr/libexec/docker/cli-plugins/
 
 ##############################################################################
 
-echo '{"platform":"Docker Engine - Community","engine_image":"engine-community-dm","containerd_min_version":"1.2.0-beta.1","runtime":"host_install"}' > var/lib/docker-engine/distribution_based_engine.json
-sleep 1
-chmod 0644 var/lib/docker-engine/distribution_based_engine.json
+#echo '{"platform":"Docker Engine - Community","engine_image":"engine-community-dm","containerd_min_version":"1.2.0-beta.1","runtime":"host_install"}' > var/lib/docker-engine/distribution_based_engine.json
+#sleep 1
+#chmod 0644 var/lib/docker-engine/distribution_based_engine.json
 
 ##############################################################################
 
@@ -176,24 +176,33 @@ echo '{
     "native.cgroupdriver=systemd"
   ],
   "storage-driver": "overlay2"
-}' > etc/docker/daemon.json
+}' > etc/docker/daemon.json.default
 sleep 1
-chmod 0644 etc/docker/daemon.json
+chmod 0644 etc/docker/daemon.json.default
+
+##############################################################################
 
 echo '
 cd "$(dirname "$0")"
 rm -f /lib/systemd/system/docker.service
 rm -f /lib/systemd/system/docker.socket
-sleep 1
-/bin/systemctl daemon-reload
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 install -v -c -m 0644 docker.service /lib/systemd/system/
 install -v -c -m 0644 docker.socket /lib/systemd/system/
-sleep 1
-/bin/systemctl daemon-reload > /dev/null 2>&1 || :
 getent group docker >/dev/null 2>&1 || groupadd -r docker
+[[ -f /etc/docker/daemon.json ]] || /bin/cp -v /etc/docker/daemon.json.default /etc/docker/daemon.json
+[[ -d /var/lib/docker ]] || install -m 0710 -d /var/lib/docker && chown root:root /var/lib/docker
+[[ -d /var/lib/docker-engine ]] || install -m 0755 -d /var/lib/docker-engine && chown root:root /var/lib/docker-engine
+[[ -f /var/lib/docker-engine/distribution_based_engine.json ]] || \
+  echo '\''{"platform":"Docker Engine - Community","engine_image":"engine-community-dm","containerd_min_version":"1.2.0-beta.1","runtime":"host_install"}'\'' > /var/lib/docker-engine/distribution_based_engine.json && \
+  chmod 0644 /var/lib/docker-engine/distribution_based_engine.json
+[[ -d /etc/systemd/system/docker.service.d ]] || install -m 0755 -d /etc/systemd/system/docker.service.d && chown root:root /etc/systemd/system/docker.service.d
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 ' > etc/docker/.install.txt
 sleep 1
 chmod 0644 etc/docker/.install.txt
+
+##############################################################################
 
 echo '
 systemctl daemon-reload > /dev/null 2>&1 || : 
