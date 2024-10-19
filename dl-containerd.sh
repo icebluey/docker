@@ -248,8 +248,8 @@ chmod 0644 etc/containerd/containerd.service
 echo '
 cd "$(dirname "$0")"
 rm -f /lib/systemd/system/containerd.service
-[[ -d /var/lib/containerd ]] || install -v -m 0755 -d /var/lib/containerd && chown root:root /var/lib/containerd
 [[ -f /etc/containerd/config.toml ]] || cp -v /etc/containerd/config.toml.example /etc/containerd/config.toml
+[[ -d /var/lib/containerd ]] || install -v -m 0755 -d /var/lib/containerd && chown root:root /var/lib/containerd
 /bin/systemctl daemon-reload
 install -v -c -m 0644 containerd.service /lib/systemd/system/
 sleep 1
