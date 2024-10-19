@@ -190,8 +190,8 @@ rm -f /lib/systemd/system/docker.socket
 [[ -d /var/lib/docker ]] || install -v -m 0710 -d /var/lib/docker && chown root:root /var/lib/docker
 [[ -d /var/lib/docker-engine ]] || install -v -m 0755 -d /var/lib/docker-engine && chown root:root /var/lib/docker-engine
 [[ -f /var/lib/docker-engine/distribution_based_engine.json ]] || \
-  echo '\''{"platform":"Docker Engine - Community","engine_image":"engine-community-dm","containerd_min_version":"1.2.0-beta.1","runtime":"host_install"}'\'' > /var/lib/docker-engine/distribution_based_engine.json && \
-  chmod 0644 /var/lib/docker-engine/distribution_based_engine.json
+    echo '\''{"platform":"Docker Engine - Community","engine_image":"engine-community-dm","containerd_min_version":"1.2.0-beta.1","runtime":"host_install"}'\'' > /var/lib/docker-engine/distribution_based_engine.json && \
+    chmod 0644 /var/lib/docker-engine/distribution_based_engine.json
 [[ -d /etc/systemd/system/docker.service.d ]] || install -v -m 0755 -d /etc/systemd/system/docker.service.d && chown root:root /etc/systemd/system/docker.service.d
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 install -v -c -m 0644 docker.service /lib/systemd/system/
