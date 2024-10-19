@@ -9,13 +9,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-22.04
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Package docker and containerd
+      - name: Clean OS
         run: |
           sudo apt update -y -qqq
           sudo apt autoremove --purge -y needrestart || true
@@ -23,11 +20,13 @@ jobs:
           sudo ln -svf bash /bin/sh
           sudo bash scripts/clean-os.sh
           sudo apt upgrade -y -qqq
-
-          sudo rm -fr /tmp/.artifacts
           sudo rm -fr /tmp/*
+
+      - name: Package docker and containerd
+        run: |
+          sudo rm -fr /tmp/.artifacts
           sudo mkdir /tmp/.artifacts
-  
+
           sudo bash dl-docker.sh
           sudo mv -f /tmp/*.tar* /tmp/.artifacts/
   
