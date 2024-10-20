@@ -254,9 +254,25 @@ echo '{
     "native.cgroupdriver=systemd"
   ],
   "storage-driver": "overlay2"
-}' > etc/docker/daemon.json
+}' > etc/docker/daemon.json.example
 sleep 1
-chmod 0644 etc/docker/daemon.json
+chmod 0644 etc/docker/daemon.json.example
+
+echo '{
+  "dns": [
+    "8.8.8.8"
+  ],
+  "exec-opts": [
+    "native.cgroupdriver=systemd"
+  ],
+  "storage-driver": "overlay2",
+  "data-root": "/var/lib/docker",
+  "insecure-registries": [
+    "10.10.10.10:443"
+  ]
+}' > etc/docker/daemon.json.example2
+sleep 1
+chmod 0644 etc/docker/daemon.json.example2
 
 ##############################################################################
 
@@ -265,8 +281,8 @@ cd "$(dirname "$0")"
 rm -f /lib/systemd/system/containerd.service
 rm -f /lib/systemd/system/docker.service
 rm -f /lib/systemd/system/docker.socket
-sleep 1
-/bin/systemctl daemon-reload
+[[ -f /etc/docker/daemon.json ]] || /bin/cp -v /etc/docker/daemon.json.example /etc/docker/daemon.json
+/bin/systemctl daemon-reload > /dev/null 2>&1 || :
 install -v -c -m 0644 containerd.service /lib/systemd/system/
 install -v -c -m 0644 docker.service /lib/systemd/system/
 install -v -c -m 0644 docker.socket /lib/systemd/system/
