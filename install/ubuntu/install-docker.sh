@@ -15,9 +15,9 @@ set -e
 _tmp_dir="$(mktemp -d)"
 cd "${_tmp_dir}"
 wget -q -c -t 9 -T 9 \
-'https://github.com/icebluey/docker/releases/download/v2024-10-19/containerd-1.7.23-1_amd64.tar.xz'
+'https://github.com/icebluey/docker/releases/download/v2024-10-20/containerd-1.7.23-1_amd64.tar.xz'
 wget -q -c -t 9 -T 9 \
-'https://github.com/icebluey/docker/releases/download/v2024-10-19/docker-only-27.3.1-1_amd64.tar.xz'
+'https://github.com/icebluey/docker/releases/download/v2024-10-20/docker-only-27.3.1-1_amd64.tar.xz'
 rm -f /usr/bin/containerd
 rm -fr /usr/bin/containerd-*
 rm -f /usr/bin/ctr
@@ -60,21 +60,21 @@ cd /tmp
 rm -fr "${_tmp_dir}"
 bash /etc/containerd/.install.txt
 bash /etc/docker/.install.txt
-
+/bin/rm -f /etc/docker/daemon.json
 echo '{
-    "dns": [
-        "8.8.8.8"
-    ],
-    "exec-opts": [
-        "native.cgroupdriver=systemd"
-    ],
-    "storage-driver": "overlay2",
-    "data-root": "/mnt/docker-data"
+  "dns": [
+    "8.8.8.8"
+  ],
+  "exec-opts": [
+    "native.cgroupdriver=systemd"
+  ],
+  "storage-driver": "overlay2",
+  "data-root": "/mnt/docker-data"
 }' > /etc/docker/daemon.json
 /bin/rm -fr /mnt/docker-data
-sleep 2
+sleep 1
 mkdir /mnt/docker-data
 systemctl start containerd.service >/dev/null 2>&1 || :
-sleep 2
+sleep 1
 systemctl start docker.service >/dev/null 2>&1 || :
 exit
