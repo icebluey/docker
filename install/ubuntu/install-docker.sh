@@ -77,4 +77,8 @@ mkdir /mnt/docker-data
 systemctl start containerd.service >/dev/null 2>&1 || :
 sleep 1
 systemctl start docker.service >/dev/null 2>&1 || :
+sleep 2
+echo
+docker info || true
+echo
 exit
