@@ -171,17 +171,16 @@ sleep 2
 cd ..
 rm -fr runc.tmp
 
-_containerd_ver="$(wget -qO- 'https://github.com/containerd/containerd/releases' | grep -i "containerd.*linux.*\.t" | grep -i 'href="/containerd/containerd/releases/download/' | sed 's|"|\n|g' | grep -i '^/containerd/containerd/releases/download/' | sed -e 's|.*/v||g' -e 's|/c.*||g' | grep -ivE 'alpha|beta|rc' | sort -V | uniq | tail -n 1)"
-wget -q -c -t 0 -T 9 "https://github.com/containerd/containerd/releases/download/v${_containerd_ver}/containerd-${_containerd_ver}-linux-amd64.tar.gz.sha256sum"
-wget -q -c -t 0 -T 9 "https://github.com/containerd/containerd/releases/download/v${_containerd_ver}/containerd-${_containerd_ver}-linux-amd64.tar.gz"
-sleep 2
-sha256sum -c "containerd-${_containerd_ver}-linux-amd64.tar.gz.sha256sum"
-sleep 2
-rm -f "containerd-${_containerd_ver}-linux-amd64.tar.gz.sha256sum"
-tar -xof "containerd-${_containerd_ver}-linux-amd64.tar.gz"
-
 rm -fr /tmp/containerd
-sleep 2
+_containerd_ver="$(wget -qO- 'https://github.com/containerd/containerd/releases' | grep -i "containerd.*linux.*\.t" | grep -i 'href="/containerd/containerd/releases/download/' | sed 's|"|\n|g' | grep -i '^/containerd/containerd/releases/download/' | sed -e 's|.*/v||g' -e 's|/c.*||g' | grep -ivE 'alpha|beta|rc' | sort -V | uniq | tail -n 1)"
+#wget -q -c -t 0 -T 9 "https://github.com/containerd/containerd/releases/download/v${_containerd_ver}/containerd-${_containerd_ver}-linux-amd64.tar.gz"
+#wget -q -c -t 0 -T 9 "https://github.com/containerd/containerd/releases/download/v${_containerd_ver}/containerd-${_containerd_ver}-linux-amd64.tar.gz.sha256sum"
+wget -q -c -t 0 -T 9 "https://github.com/containerd/containerd/releases/download/v${_containerd_ver}/containerd-static-${_containerd_ver}-linux-amd64.tar.gz"
+wget -q -c -t 0 -T 9 "https://github.com/containerd/containerd/releases/download/v${_containerd_ver}/containerd-static-${_containerd_ver}-linux-amd64.tar.gz.sha256sum"
+sha256sum -c containerd-*.tar*.sha256*
+rm -f containerd-*.tar*.sha256*
+tar -xof containerd-*-linux-amd64.tar.gz
+
 install -m 0755 -d /tmp/containerd/usr/bin
 install -m 0755 -d /tmp/containerd/etc/containerd/certs.d
 install -m 0755 -d /tmp/containerd/etc/containerd/ocicrypt/keys
