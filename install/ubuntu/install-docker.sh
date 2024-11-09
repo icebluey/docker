@@ -15,9 +15,9 @@ set -e
 _tmp_dir="$(mktemp -d)"
 cd "${_tmp_dir}"
 wget -q -c -t 9 -T 9 \
-'https://github.com/icebluey/docker/releases/download/v2024-10-25/containerd-1.7.23-1_amd64.tar.xz'
+'https://github.com/icebluey/docker/releases/download/v2024-11-09/containerd-1.7.23-1_amd64.tar.xz'
 wget -q -c -t 9 -T 9 \
-'https://github.com/icebluey/build-moby-docker/releases/download/v27.3.1/docker-only-27.3.1-1_amd64.tar.xz'
+'https://github.com/icebluey/docker/releases/download/v2024-11-09/docker-only-27.3.1-1_amd64.tar.xz'
 rm -f /usr/bin/containerd
 rm -fr /usr/bin/containerd-*
 rm -f /usr/bin/ctr
