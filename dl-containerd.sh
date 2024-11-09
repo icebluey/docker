@@ -172,7 +172,13 @@ cd ..
 rm -fr runc.tmp
 
 rm -fr /tmp/containerd
-_containerd_ver="$(wget -qO- 'https://github.com/containerd/containerd/releases' | grep -i "containerd.*linux.*\.t" | grep -i 'href="/containerd/containerd/releases/download/' | sed 's|"|\n|g' | grep -i '^/containerd/containerd/releases/download/' | sed -e 's|.*/v||g' -e 's|/c.*||g' | grep -ivE 'alpha|beta|rc' | sort -V | uniq | tail -n 1)"
+
+# latest
+#_containerd_ver="$(wget -qO- 'https://github.com/containerd/containerd/releases' | grep -i "containerd.*linux.*\.t" | grep -i 'href="/containerd/containerd/releases/download/' | sed 's|"|\n|g' | grep -i '^/containerd/containerd/releases/download/' | sed -e 's|.*/v||g' -e 's|/c.*||g' | grep -ivE 'alpha|beta|rc' | sort -V | uniq | tail -n 1)"
+
+# 1.7.x
+_containerd_ver="$(wget -qO- 'https://github.com/containerd/containerd/releases' | grep -i 'href="/containerd/containerd/releases/tag/' | sed 's|"|\n|g' | grep -i '^/containerd/containerd/releases/tag/' | sed -e 's|.*/v||g' -e 's|/c.*||g' | grep -ivE 'alpha|beta|rc' | grep '1\.7' | sort -V | uniq | tail -n 1)"
+
 #wget -q -c -t 0 -T 9 "https://github.com/containerd/containerd/releases/download/v${_containerd_ver}/containerd-${_containerd_ver}-linux-amd64.tar.gz"
 #wget -q -c -t 0 -T 9 "https://github.com/containerd/containerd/releases/download/v${_containerd_ver}/containerd-${_containerd_ver}-linux-amd64.tar.gz.sha256sum"
 wget -q -c -t 0 -T 9 "https://github.com/containerd/containerd/releases/download/v${_containerd_ver}/containerd-static-${_containerd_ver}-linux-amd64.tar.gz"
