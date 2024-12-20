@@ -1,4 +1,4 @@
 # docker
 
-https://download.docker.com/linux/static/stable/
+[Docker static binary](https://download.docker.com/linux/static/stable/)
 
