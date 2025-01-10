@@ -49,7 +49,6 @@ _services=(
 for _service in ${_services[@]}; do
     systemctl stop ${_service} >/dev/null 2>&1
 done
-sleep 3
 for _service in ${_services[@]}; do
     systemctl disable ${_service} >/dev/null 2>&1
 done
