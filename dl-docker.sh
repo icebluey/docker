@@ -35,7 +35,10 @@ _filename="$(wget -qO- 'https://download.docker.com/linux/static/stable/x86_64/'
 #_filename="$(wget -qO- 'https://download.docker.com/linux/static/stable/x86_64/' | grep 'a href="' | sed -e '/extras/d' | grep 'tgz"' | cut -d'"' -f2 | grep 'tgz$' | grep '27\.3\.' | sort -V | uniq | tail -n 1)"
 
 # 27.4.X
-_filename="$(wget -qO- 'https://download.docker.com/linux/static/stable/x86_64/' | grep 'a href="' | sed -e '/extras/d' | grep 'tgz"' | cut -d'"' -f2 | grep 'tgz$' | grep '27\.4\.' | sort -V | uniq | tail -n 1)"
+#_filename="$(wget -qO- 'https://download.docker.com/linux/static/stable/x86_64/' | grep 'a href="' | sed -e '/extras/d' | grep 'tgz"' | cut -d'"' -f2 | grep 'tgz$' | grep '27\.4\.' | sort -V | uniq | tail -n 1)"
+
+# 27.5.X
+_filename="$(wget -qO- 'https://download.docker.com/linux/static/stable/x86_64/' | grep 'a href="' | sed -e '/extras/d' | grep 'tgz"' | cut -d'"' -f2 | grep 'tgz$' | grep '27\.5\.' | sort -V | uniq | tail -n 1)"
 
 _version="$(echo "${_filename}" | sed 's/\.tgz$//g' | cut -d- -f2)"
 echo "Docker version ${_version}"
