@@ -206,10 +206,12 @@ cd /tmp/containerd
 sleep 2
 file usr/bin/* | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped.*/\1/p' | xargs -I '{}' strip '{}'
 
-./usr/bin/containerd config default | sed 's|SystemdCgroup =.*|SystemdCgroup = true|g' | sed '/disable_apparmor/s|false|true|g' > etc/containerd/config.toml
+./usr/bin/containerd config default | sed -e 's|SystemdCgroup =.*|SystemdCgroup = true|g' -e '/disable_apparmor/s|false|true|g' > etc/containerd/config.toml
+sed '/\[plugins\."io\.containerd\.grpc\.v1\.cri"\.registry\]/,/config_path = ""$/ s|config_path = ""$|config_path = "/etc/containerd/certs.d"|' -i etc/containerd/config.toml
 sleep 1
 chmod 0644 etc/containerd/config.toml
-sed "$(cat -n etc/containerd/config.toml | grep '\[plugins."io.containerd.grpc.v1.cri".registry\]' -A 2 | grep 'config_path' | awk '{print $1}')s|config_path =.*|config_path = "\""/etc/containerd/certs.d"\""|g" -i etc/containerd/config.toml
+#sed "$(cat -n etc/containerd/config.toml | grep '\[plugins."io.containerd.grpc.v1.cri".registry\]' -A 2 | grep 'config_path' | awk '{print $1}')s|config_path =.*|config_path = "\""/etc/containerd/certs.d"\""|g" -i etc/containerd/config.toml
+
 sleep 1
 mv -f etc/containerd/config.toml etc/containerd/config.toml.example
 
