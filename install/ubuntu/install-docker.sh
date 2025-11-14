@@ -71,9 +71,15 @@ echo '{
   "storage-driver": "overlay2",
   "data-root": "/mnt/docker-data"
 }' > /etc/docker/daemon.json
-/bin/rm -fr /mnt/docker-data
-sleep 1
+
+rm -fr /mnt/docker-data
 mkdir /mnt/docker-data
+
+rm -fr /mnt/containerd-data
+mkdir /mnt/containerd-data
+[[ -f /etc/containerd/config.toml ]] || cp -v /etc/containerd/config.toml.example /etc/containerd/config.toml
+sed "s|^root = .*|root = '/mnt/containerd-data'|g" -i /etc/containerd/config.toml
+
 systemctl start containerd.service >/dev/null 2>&1 || :
 sleep 1
 systemctl start docker.service >/dev/null 2>&1 || :
