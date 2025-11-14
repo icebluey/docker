@@ -28,3 +28,18 @@ ip_vs_sed
 ip_vs_nq
 ip_vs_mh
 ```
+
+```
+# 导出和加载tar镜像文件
+docker image save / load
+
+docker image save -o output.tar REPOSITORY:TAG
+docker image load -i file.tar
+docker image load < file.tar.gz
+
+ls -1 *.tar.gz | xargs --no-run-if-empty -I {} bash -c "docker image load < {}"
+ls -1 *.tar | xargs --no-run-if-empty -I {} bash -c "docker image load -i {}"
+
+docker image import 导入镜像没有 REPOSITORY 和 TAG 信息
+
+```
