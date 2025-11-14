@@ -87,4 +87,8 @@ sleep 1
 echo
 docker info || true
 echo
+ls -la /mnt/containerd-data/
+echo
+ls -la /mnt/docker-data/
+echo
 exit
