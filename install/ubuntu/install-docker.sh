@@ -58,19 +58,22 @@ tar -xof docker*.tar* -C /
 tar -xof containerd*.tar* -C /
 cd /tmp
 rm -fr "${_tmp_dir}"
+
 bash /etc/containerd/.install.txt
 bash /etc/docker/.install.txt
-/bin/rm -f /etc/docker/daemon.json
+
 echo '{
-  "dns": [
-    "8.8.8.8"
-  ],
-  "exec-opts": [
-    "native.cgroupdriver=systemd"
-  ],
-  "storage-driver": "overlay2",
-  "data-root": "/mnt/docker-data"
+    "dns": [
+        "8.8.8.8"
+    ],
+    "exec-opts": [
+        "native.cgroupdriver=systemd"
+    ],
+    "storage-driver": "overlay2",
+    "data-root": "/mnt/docker-data"
 }' > /etc/docker/daemon.json
+
+sed "s|^root = .*|root = '/mnt/containerd-data'|g" -i /etc/containerd/config.toml
 
 echo
 echo "/mnt:"
@@ -82,8 +85,6 @@ mkdir /mnt/docker-data
 
 rm -fr /mnt/containerd-data
 mkdir /mnt/containerd-data
-[[ -f /etc/containerd/config.toml ]] || cp -v /etc/containerd/config.toml.example /etc/containerd/config.toml
-sed "s|^root = .*|root = '/mnt/containerd-data'|g" -i /etc/containerd/config.toml
 
 systemctl start containerd.service >/dev/null 2>&1 || :
 sleep 1
