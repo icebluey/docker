@@ -72,6 +72,11 @@ echo '{
   "data-root": "/mnt/docker-data"
 }' > /etc/docker/daemon.json
 
+echo
+echo "/mnt:"
+ls -la /mnt/
+echo
+
 rm -fr /mnt/docker-data
 mkdir /mnt/docker-data
 
@@ -87,8 +92,10 @@ sleep 1
 echo
 docker info || true
 echo
+echo "/mnt/containerd-data:"
 ls -la /mnt/containerd-data/
 echo
+echo "/mnt/docker-data:"
 ls -la /mnt/docker-data/
 echo
 exit
