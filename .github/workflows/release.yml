@@ -16,6 +16,7 @@ jobs:
         run: |
           sudo apt update -y -qqq
           sudo apt autoremove --purge -y needrestart || true
+          sudo apt remove --purge '^docker.*' '^container.*' '^podman.*' crun runc '^php.*'
           sudo apt install -y -qqq bash wget ca-certificates curl git xz-utils tar gzip bzip2 openssl
           sudo ln -svf bash /bin/sh
           sudo bash scripts/clean-os.sh
