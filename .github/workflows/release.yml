@@ -30,14 +30,16 @@ jobs:
 
           sudo bash dl-docker.sh
           sudo mv -f /tmp/*.tar* /tmp/.artifacts/
+          sudo rm -fr /tmp/*
   
           sudo bash dl-containerd.sh
           sudo mv -f /tmp/*.tar* /tmp/.artifacts/
+          sudo rm -fr /tmp/*
  
           sudo bash dl-docker-only.sh
           sudo mv -f /tmp/*.tar* /tmp/.artifacts/
-      
-          sudo sleep 2
+          sudo rm -fr /tmp/*
+
           sudo chmod 0644 /tmp/.artifacts/*.tar*
 
       - name: Generate release tag env
