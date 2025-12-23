@@ -58,7 +58,7 @@ systemctl disable snapd.seeded.service
 systemctl stop snapd.service
 systemctl stop snapd.socket
 systemctl stop snapd.seeded.service
-apt autoremove --purge lxd-agent-loader snapd
+apt autoremove --purge -y lxd-agent-loader snapd
 /bin/rm -rf ~/snap
 /bin/rm -rf /snap
 /bin/rm -rf /var/snap
