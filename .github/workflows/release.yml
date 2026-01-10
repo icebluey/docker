@@ -57,5 +57,5 @@ jobs:
 
       - name: Delete old release tag env
         run: |
-          rm -fr /tmp/.artifacts
           sed -e "/^_release_ver=/d" -i $GITHUB_ENV
+          sudo rm -fr /tmp/.artifacts
