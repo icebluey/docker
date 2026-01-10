@@ -115,11 +115,10 @@ systemctl start chrony.service
 systemctl enable chrony.service
 sleep 10
 chronyc makestep
-apt install -y binutils coreutils util-linux findutils diffutils pkg-config
-apt install -y sed gawk grep file tar gzip bzip2 xz-utils
-apt install -y libseccomp-dev libseccomp2 gperf
-apt install -y make gcc g++ perl libperl-dev groff-base dpkg-dev cmake m4
+apt install -y binutils coreutils util-linux findutils diffutils sed gawk grep file tar gzip bzip2 xz-utils
+apt install -y make gcc g++ m4 pkg-config perl libperl-dev groff-base dpkg-dev cmake
 apt install -y autoconf autoconf-archive autogen automake autopoint autotools-dev libtool m4 bison flex
+apt install -y libseccomp-dev libseccomp2 gperf
 
 df -Th
 exit
