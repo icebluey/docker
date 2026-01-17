@@ -16,11 +16,14 @@ jobs:
         run: |
           sudo apt update -y -qqq
           sudo apt autoremove --purge -y needrestart || true
+          sudo systemctl stop postgresql.service mysql.service mysqld.service >/dev/null 2>&1 || : 
+          sudo systemctl disable postgresql.service mysql.service mysqld.service >/dev/null 2>&1 || : 
+          sudo apt autoremove --purge -y '^postgresql.*' '^mysql.*'
           sudo apt remove --purge -y '^docker.*' '^container.*' '^podman.*' crun runc '^php.*'
+          sudo bash scripts/clean-os.sh
           sudo apt install -y -qqq bash wget ca-certificates openssl curl binutils coreutils util-linux findutils diffutils patch sed gawk grep file gzip bzip2 xz-utils tar git
           sudo apt reinstall -y -qqq bash wget ca-certificates openssl curl binutils coreutils util-linux findutils diffutils patch sed gawk grep file gzip bzip2 xz-utils tar git
           sudo ln -svf bash /bin/sh
-          sudo bash scripts/clean-os.sh
           sudo apt upgrade -y -qqq
           sudo rm -fr /tmp/*
 
