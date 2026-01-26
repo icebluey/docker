@@ -11,7 +11,7 @@ systemctl disable docker.socket >/dev/null 2>&1 || :
 systemctl disable containerd.service >/dev/null 2>&1 || :
 /bin/rm -fr /root/.docker
 /bin/rm -fr ~/.docker
-set -e
+set -euo pipefail
 _tmp_dir="$(mktemp -d)"
 cd "${_tmp_dir}"
 wget -q -c -t 9 -T 9 \
@@ -47,6 +47,9 @@ rm -fr /var/run/docker*
 rm -fr /etc/containerd
 rm -fr /etc/docker
 rm -fr /etc/systemd/system/docker.service.d
+rm -fr /usr/local/lib/docker
+rm -fr /usr/local/libexec/docker
+rm -fr /usr/lib/docker
 rm -fr /usr/libexec/docker
 userdel -f -r docker 2>/dev/null || :
 groupdel -f docker 2>/dev/null || :
