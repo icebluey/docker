@@ -16,6 +16,9 @@ install -v -c -m 0755 -d /opt/cni/bin/
 nf_conntrack
 br_netfilter
 ip_vs
+nf_conntrack
+br_netfilter
+ip_vs
 ip_vs_rr
 ip_vs_wrr
 ip_vs_lc
