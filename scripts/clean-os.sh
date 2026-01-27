@@ -7,7 +7,7 @@ df -Th
 apt autoremove --purge -y needrestart || : 
 systemctl stop postgresql.service mysql.service mysqld.service >/dev/null 2>&1 || : 
 systemctl disable postgresql.service mysql.service mysqld.service >/dev/null 2>&1 || : 
-apt autoremove --purge -y '^postgresql.*' '^mysql.*' '^mssql.*' '^msbuild.*' '^msodbcsql.*'
+apt autoremove --purge -y '^postgresql.*' '^mysql.*' '^mssql.*' '^msodbcsql.*'
 rm -fr /var/lib/postgresql /var/lib/mysql
 systemctl stop snapd.service snapd.socket >/dev/null 2>&1 || : 
 systemctl disable snapd.service snapd.socket >/dev/null 2>&1 || : 
