@@ -65,6 +65,7 @@ chronyc makestep
 
 apt install -y wget ca-certificates openssl curl
 apt install -y binutils coreutils util-linux findutils diffutils sed gawk grep file tar gzip bzip2 xz-utils
+apt install -y util-linux-extra || true
 #apt install -y make gcc g++ m4 pkg-config perl libperl-dev groff-base dpkg-dev cmake
 #apt install -y autoconf autoconf-archive autogen automake autopoint autotools-dev libtool m4 bison flex
 #apt install -y libseccomp-dev libseccomp2 gperf
