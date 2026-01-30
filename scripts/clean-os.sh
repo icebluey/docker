@@ -54,15 +54,17 @@ server time.apple.com iburst minpoll 4 maxpoll 5\
 
 systemctl start chrony.service
 systemctl enable chrony.service
-sleep 2
+sleep 10
+chronyc sources
+sleep 10
 chronyc sources
 sleep 5
 chronyc tracking
 sleep 2
 chronyc makestep
 
-#apt install -y wget ca-certificates openssl curl
-#apt install -y binutils coreutils util-linux findutils diffutils sed gawk grep file tar gzip bzip2 xz-utils
+apt install -y wget ca-certificates openssl curl
+apt install -y binutils coreutils util-linux findutils diffutils sed gawk grep file tar gzip bzip2 xz-utils
 #apt install -y make gcc g++ m4 pkg-config perl libperl-dev groff-base dpkg-dev cmake
 #apt install -y autoconf autoconf-archive autogen automake autopoint autotools-dev libtool m4 bison flex
 #apt install -y libseccomp-dev libseccomp2 gperf
