@@ -40,6 +40,10 @@ systemctl disable udisks2.service
 rm -fr /etc/resolv.conf
 echo "nameserver 8.8.8.8" >/etc/resolv.conf 
 
+apt install -y wget ca-certificates openssl curl
+apt install -y binutils coreutils util-linux findutils diffutils sed gawk grep file tar gzip bzip2 xz-utils
+apt install -y util-linux-extra || true
+
 apt install -y chrony
 systemctl stop chrony.service
 sed 's/^\(pool\|server\|refclock\)/#\1/g' -i /etc/chrony/chrony.conf
@@ -62,10 +66,9 @@ sleep 5
 chronyc tracking
 sleep 2
 chronyc makestep
+sleep 1
+hwclock -w
 
-apt install -y wget ca-certificates openssl curl
-apt install -y binutils coreutils util-linux findutils diffutils sed gawk grep file tar gzip bzip2 xz-utils
-apt install -y util-linux-extra || true
 #apt install -y make gcc g++ m4 pkg-config perl libperl-dev groff-base dpkg-dev cmake
 #apt install -y autoconf autoconf-archive autogen automake autopoint autotools-dev libtool m4 bison flex
 #apt install -y libseccomp-dev libseccomp2 gperf
