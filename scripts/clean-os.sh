@@ -54,7 +54,11 @@ server time.apple.com iburst minpoll 4 maxpoll 5\
 
 systemctl start chrony.service
 systemctl enable chrony.service
-sleep 10
+sleep 2
+chronyc sources
+sleep 5
+chronyc tracking
+sleep 2
 chronyc makestep
 
 #apt install -y wget ca-certificates openssl curl
