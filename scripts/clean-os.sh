@@ -6,8 +6,6 @@ df -Th
 apt update -y -qqq
 apt autoremove --purge -y needrestart || : 
 
-_installedpackages="$(dpkg -l | awk 'NR > 5 && NF >= 2 {print $2}')"
-
 systemctl stop snapd.service snapd.socket >/dev/null 2>&1 || : 
 systemctl disable snapd.service snapd.socket >/dev/null 2>&1 || : 
 systemctl stop postgresql.service mysql.service mysqld.service >/dev/null 2>&1 || : 
@@ -15,11 +13,15 @@ systemctl disable postgresql.service mysql.service mysqld.service >/dev/null 2>&
 systemctl stop docker.service containerd.service >/dev/null 2>&1 || : 
 systemctl disable docker.service containerd.service >/dev/null 2>&1 || : 
 
+rm -f /tmp/.installedpackages.tmp.txt
+dpkg -l | awk 'NR > 5 && NF >= 2 {print $2}' > /tmp/.installedpackages.tmp.txt
 for i in php lxd snap postgresql mysql mssql msodbcsql firefox firebird google dotnet microsoft mono- powershell llvm docker container podman; do
-  if grep -q -i "^${i}" "${_installedpackages}"; then
+  if grep -q -i "^${i}" /tmp/.installedpackages.tmp.txt; then
     apt autoremove --purge -y --allow-remove-essential "^${i}.*"
   fi
 done
+rm -f /tmp/.installedpackages.tmp.txt
+
 apt autoremove --purge -y crun runc
 
 rm -fr /var/lib/postgresql /var/lib/mysql
