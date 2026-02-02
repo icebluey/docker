@@ -69,9 +69,9 @@ chronyc makestep
 sleep 1
 hwclock -w
 
-#apt install -y make gcc g++ m4 pkg-config perl libperl-dev groff-base dpkg-dev cmake
-#apt install -y autoconf autoconf-archive autogen automake autopoint autotools-dev libtool m4 bison flex
-#apt install -y libseccomp-dev libseccomp2 gperf
+apt install -y make gcc g++ m4 pkg-config perl libperl-dev groff-base dpkg-dev cmake
+apt install -y autoconf autoconf-archive autogen automake autopoint autotools-dev libtool m4 bison flex
+apt install -y libseccomp-dev libseccomp2 gperf
 
 df -Th
 exit
