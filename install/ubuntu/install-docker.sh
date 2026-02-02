@@ -15,9 +15,9 @@ set -euo pipefail
 _tmp_dir="$(mktemp -d)"
 cd "${_tmp_dir}"
 wget -q -c -t 9 -T 9 \
-'https://github.com/icebluey/docker/releases/download/v2026-01-17/docker-only-29.1.5-1_amd64.tar.xz'
+'https://github.com/icebluey/docker/releases/download/v2026-02-02/docker-only-29.2.0-1_amd64.tar.xz'
 wget -q -c -t 9 -T 9 \
-'https://github.com/icebluey/docker/releases/download/v2026-01-17/containerd-2.2.1-1_amd64.tar.xz'
+'https://github.com/icebluey/docker/releases/download/v2026-02-02/containerd-2.2.1-1_amd64.tar.xz'
 rm -f /usr/bin/containerd
 rm -fr /usr/bin/containerd-*
 rm -f /usr/bin/ctr
