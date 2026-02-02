@@ -15,7 +15,7 @@ systemctl disable docker.service containerd.service >/dev/null 2>&1 || :
 
 rm -f /tmp/.installedpackages.tmp.txt
 dpkg -l | awk 'NR > 5 && NF >= 2 {print $2}' > /tmp/.installedpackages.tmp.txt
-for i in php lxd snap postgresql mysql mssql msodbcsql firefox firebird google dotnet microsoft mono- powershell llvm docker container podman; do
+for i in php lxd snap postgresql mysql mssql msodbcsql firefox firebird google-chrome dotnet microsoft mono- powershell llvm docker container podman; do
   if grep -q -i "^${i}" /tmp/.installedpackages.tmp.txt; then
     apt autoremove --purge -y --allow-remove-essential "^${i}.*"
   fi
@@ -27,6 +27,8 @@ apt autoremove --purge -y crun runc
 rm -fr /var/lib/postgresql /var/lib/mysql
 rm -fr ~/snap /snap /var/snap /var/lib/snapd /var/cache/snapd /usr/lib/snapd /tmp/snap.lxd /tmp/snap-private-tmp
 rm -fr /var/lib/docker* /var/lib/containerd /usr/libexec/docker /etc/docker /etc/containerd
+
+rm -fr /usr/lib/google-cloud* /usr/bin/gcloud*  /usr/share/man/man1/gcloud* /usr/share/doc/google-cloud* /usr/share/google-cloud* /usr/bin/docker-credential-gcloud* /usr/bin/gcloud* /usr/bin/git-credential-gcloud.sh /etc/bash_completion.d/gcloud
 
 systemctl stop systemd-resolved.service
 systemctl stop systemd-timesyncd
