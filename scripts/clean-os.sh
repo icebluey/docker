@@ -30,6 +30,10 @@ rm -fr /var/lib/docker* /var/lib/containerd /usr/libexec/docker /etc/docker /etc
 
 rm -fr /usr/lib/google-cloud* /usr/bin/gcloud*  /usr/share/man/man1/gcloud* /usr/share/doc/google-cloud* /usr/share/google-cloud* /usr/bin/docker-credential-gcloud* /usr/bin/gcloud* /usr/bin/git-credential-gcloud* /etc/bash_completion.d/gcloud*
 
+rm -fr /opt/hostedtoolcache/
+rm -fr /usr/local/lib/android/
+rm -fr /usr/local/lib/node_modules/
+
 systemctl stop systemd-resolved.service
 systemctl stop systemd-timesyncd
 systemctl stop unattended-upgrades
