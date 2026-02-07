@@ -33,6 +33,7 @@ _install_go() {
     alias go="$GOROOT/bin/go"
     alias gofmt="$GOROOT/bin/gofmt"
     echo
+    go env > /dev/null 2>&1
     go version
     echo
 }
