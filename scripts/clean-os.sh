@@ -26,7 +26,6 @@ rm -f /tmp/.installedpackages.tmp.txt
 
 apt autoremove --purge -y crun runc
 
-rm -fr /var/lib/postgresql /var/lib/mysql
 rm -fr ~/snap /snap /var/snap /var/lib/snapd /var/cache/snapd /usr/lib/snapd /tmp/snap.lxd /tmp/snap-private-tmp
 rm -fr /var/lib/docker* /var/lib/containerd /usr/libexec/docker /etc/docker /etc/containerd
 
@@ -38,11 +37,13 @@ for item in /usr/lib/google-cloud* /usr/bin/gcloud*  /usr/share/man/man1/gcloud*
     [ -f "$item" ] && rm -f "$item"
 done
 
-for item in /opt/hostedtoolcache /usr/local/lib/android /usr/local/lib/node_modules; do
+for item in /var/lib/postgresql /var/lib/mysql /opt/hostedtoolcache /usr/local/lib/android /usr/local/lib/node_modules; do
     [ -d "$item" ] && rsync -a --delete /tmp/empty/ "$item/" && rm -fr "$item"
     [ -f "$item" ] && rm -f "$item"
 done
+rm -fr /tmp/empty
 
+rm -fr /var/lib/postgresql /var/lib/mysql
 rm -fr /usr/lib/google-cloud* /usr/bin/gcloud*  /usr/share/man/man1/gcloud* /usr/share/doc/google-cloud* /usr/share/google-cloud* /usr/bin/docker-credential-gcloud* /usr/bin/gcloud* /usr/bin/git-credential-gcloud* /etc/bash_completion.d/gcloud*
 rm -fr /opt/hostedtoolcache/
 rm -fr /usr/local/lib/android/
