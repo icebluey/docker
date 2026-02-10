@@ -34,13 +34,13 @@ rm -fr /tmp/empty
 mkdir /tmp/empty
 
 for item in /usr/lib/google-cloud* /usr/bin/gcloud*  /usr/share/man/man1/gcloud* /usr/share/doc/google-cloud* /usr/share/google-cloud* /usr/bin/docker-credential-gcloud* /usr/bin/gcloud* /usr/bin/git-credential-gcloud* /etc/bash_completion.d/gcloud*; do
-    [ -d "$item" ] && rsync -a --delete /tmp/empty/ "$item/" && rm -fr "$item"
-    [ -f "$item" ] && rm -f "$item"
+    [ -d "$item" ] && echo "Deleting: $item" && rsync -a --delete /tmp/empty/ "$item/" && rm -fr "$item"
+    [ -f "$item" ] && echo "Deleting: $item" && rm -f "$item"
 done
 
 for item in /var/lib/postgresql /var/lib/mysql /opt/hostedtoolcache /usr/local/lib/android /usr/local/lib/node_modules; do
-    [ -d "$item" ] && rsync -a --delete /tmp/empty/ "$item/" && rm -fr "$item"
-    [ -f "$item" ] && rm -f "$item"
+    [ -d "$item" ] && echo "Deleting: $item" && rsync -a --delete /tmp/empty/ "$item/" && rm -fr "$item"
+    [ -f "$item" ] && echo "Deleting: $item" && rm -f "$item"
 done
 rm -fr /tmp/empty
 
