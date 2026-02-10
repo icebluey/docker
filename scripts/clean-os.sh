@@ -25,6 +25,7 @@ done
 rm -f /tmp/.installedpackages.tmp.txt
 
 apt autoremove --purge -y crun runc
+echo 'done crun runc'
 
 rm -fr ~/snap /snap /var/snap /var/lib/snapd /var/cache/snapd /usr/lib/snapd /tmp/snap.lxd /tmp/snap-private-tmp
 rm -fr /var/lib/docker* /var/lib/containerd /usr/libexec/docker /etc/docker /etc/containerd
