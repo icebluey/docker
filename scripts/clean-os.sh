@@ -25,13 +25,14 @@ done
 rm -f /tmp/.installedpackages.tmp.txt
 
 apt autoremove --purge -y crun runc
-echo 'done crun runc'
 
 rm -fr ~/snap /snap /var/snap /var/lib/snapd /var/cache/snapd /usr/lib/snapd /tmp/snap.lxd /tmp/snap-private-tmp
 rm -fr /var/lib/docker* /var/lib/containerd /usr/libexec/docker /etc/docker /etc/containerd
 
 rm -fr /tmp/empty
 mkdir /tmp/empty
+
+rsync -a --delete /tmp/empty/ /usr/share/man/
 
 for item in /usr/lib/google-cloud* /usr/bin/gcloud*  /usr/share/man/man1/gcloud* /usr/share/doc/google-cloud* /usr/share/google-cloud* /usr/bin/docker-credential-gcloud* /usr/bin/gcloud* /usr/bin/git-credential-gcloud* /etc/bash_completion.d/gcloud*; do
     [ -d "$item" ] && echo "Deleting: $item" && rsync -a --delete /tmp/empty/ "$item/" && rm -fr "$item"
