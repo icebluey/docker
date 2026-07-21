@@ -38,8 +38,59 @@ _install_go() {
     echo
 }
 
+_install_rust() {
+    set -e
+    cd /tmp
+    rm -fr ~/.cargo ~/.rustup
+    rm -fr /root/.cargo /root/.rustup
+    rm -fr /usr/local/rust
+    mkdir /usr/local/rust
+    export CARGO_HOME=/usr/local/rust
+    export RUSTUP_HOME=/usr/local/rust
+    _stable_ver="$(wget -qO- 'https://forge.rust-lang.org/infra/other-installation-methods.html' | grep -i x86_64-unknown-linux-gnu | sed 's|"|\n|g' | grep -ivE 'alpha|beta|night' | grep -i "https://.*x86_64-unknown-linux-gnu" | sed 's|.*rust-||g; s|-x86.*||g' | sort -V | tail -n 1)"
+    rm -fr /tmp/.install_rust.sh
+    curl --proto '=https' --tlsv1.3 -sSf https://sh.rustup.rs -o /tmp/.install_rust.sh
+    bash /tmp/.install_rust.sh -v --default-host x86_64-unknown-linux-gnu --default-toolchain ${_stable_ver} --profile default -y
+    sed "/export PATH=/a\        export CARGO_HOME='.cargo'" -i /usr/local/rust/env
+    sed "/export PATH=/a\        export RUSTUP_HOME='/usr/local/rust'" -i /usr/local/rust/env
+    source "/usr/local/rust/env"
+    cargo --version
+    rm -f /tmp/.install_rust.sh
+}
+
+_install_libpathrs() {
+    set -e
+    _install_rust
+    source "/usr/local/rust/env"
+    /sbin/ldconfig
+    _tmp_dir="$(mktemp -d)"
+    cd "${_tmp_dir}"
+    _libpathrs_ver="$(wget -qO- 'https://github.com/cyphar/libpathrs/releases' | grep -i '/cyphar/libpathrs/releases/tag/' | sed 's|"|\n|g' | grep -i '^/cyphar/libpathrs/releases/tag/' | sed 's|.*[Vv]||g' | sort -V | tail -n 1)"
+    wget -c -t 9 -T 9 "https://github.com/cyphar/libpathrs/releases/download/v${_libpathrs_ver}/libpathrs-${_libpathrs_ver}.tar.xz"
+    tar -xof libpathrs*.tar*
+    sleep 1
+    rm -f libpathrs*.tar*
+    cd libpathrs*
+    make release
+    bash install.sh DESTDIR=/tmp/libpathrs --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu
+    cd /tmp/libpathrs
+    find usr/ -type f -iname '*.la' -delete
+    rm -vf usr/lib/x86_64-linux-gnu/libpathrs.so*
+    rm -vf /usr/lib/x86_64-linux-gnu/libpathrs.a
+    rm -vf /usr/lib/x86_64-linux-gnu/libpathrs.so*
+    sleep 2
+    /bin/cp -afr * /
+    sleep 2
+    cd /tmp
+    rm -fr "${_tmp_dir}"
+    rm -fr /tmp/libpathrs
+    rm -fr ~/.cargo ~/.rustup
+    rm -fr /root/.cargo /root/.rustup
+}
+
 _install_libseccomp() {
     set -e
+    /sbin/ldconfig
     _tmp_dir="$(mktemp -d)"
     cd "${_tmp_dir}"
     wget -c -t 9 -T 9 "https://github.com/seccomp/libseccomp/releases/download/v2.6.0/libseccomp-2.6.0.tar.gz"
@@ -110,8 +161,6 @@ _install_libseccomp() {
 
 set -e
 
-_install_libseccomp
-
 # Go programming language
 export GOROOT='/usr/local/go'
 export GOPATH="$GOROOT/home"
@@ -122,6 +171,9 @@ alias go="$GOROOT/bin/go"
 alias gofmt="$GOROOT/bin/gofmt"
 rm -fr ~/.cache/go-build
 _install_go
+
+_install_libpathrs
+_install_libseccomp
 
 _tmp_dir="$(mktemp -d)"
 cd "${_tmp_dir}"
