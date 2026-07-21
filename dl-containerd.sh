@@ -60,8 +60,6 @@ _install_rust() {
 
 _install_libpathrs() {
     set -e
-    _install_rust
-    source "/usr/local/rust/env"
     /sbin/ldconfig
     _tmp_dir="$(mktemp -d)"
     cd "${_tmp_dir}"
@@ -171,6 +169,9 @@ alias go="$GOROOT/bin/go"
 alias gofmt="$GOROOT/bin/gofmt"
 rm -fr ~/.cache/go-build
 _install_go
+
+_install_rust
+source "/usr/local/rust/env"
 
 _install_libpathrs
 _install_libseccomp
